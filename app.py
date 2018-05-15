@@ -61,5 +61,40 @@ def delete_record():
             return msg
 
 
+@app.route('/modify/', methods=['GET'])
+def modify_record():
+    if request.method == 'GET':
+        house_id = request.args.get('id')
+        print(house_id)
+        house_name = request.args.get('name')
+        city = request.args.get('city')
+        state = request.args.get('state')
+        print(house_name)
+        print(city)
+        print(state)
+        try:
+            query = 'SELECT * from data where house_id='+house_id
+            cur.execute(query)
+            if cur is not None:
+                for row in cur:
+                    print(row[1])
+                    query = 'INSERT INTO changed_data (house_name, city, state) VALUES ("' + row[1] + '","' + row[2] + '","' + \
+                            row[3] + '")'
+                    print ('\n\n\n')
+                    cur.execute(query)
+                query = 'update data set house_name = %s, city = %s, state = %s where house_id = %s'
+                data = (house_name, city, state, house_id)
+                cur.execute(query, data)
+                con.commit()
+                print "Data modified."
+                msg = "Data modified."
+        except Exception as e:
+            print(str(e))
+            print ("Data not modified.")
+            msg = "Data not modified."
+        finally:
+            return msg
+
+
 if __name__ == '__main__':
     app.run(debug=True)
