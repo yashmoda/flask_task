@@ -35,5 +35,31 @@ def add_record():
             return msg
 
 
+@app.route('/delete/', methods=['GET'])
+def delete_record():
+    if request.method == 'GET':
+        house_id = request.args.get('id')
+        print(id)
+        try:
+            query = 'SELECT * from data where house_id='+house_id
+            print('\n\n\n')
+            cur.execute(query)
+            for row in cur:
+                query = 'INSERT INTO changed_data (house_name, city, state) VALUES ("' + row[1] + '","' + row[2] + '","' + row[3] + '")'
+                print ('\n\n\n')
+                cur.execute(query)
+            query = 'delete from data where house_id='+house_id
+            cur.execute(query)
+            print (con.commit())
+            print("Data deleted successfully.")
+            msg = "Data deleted successfully."
+        except Exception as e:
+            print(str(e))
+            print("Data does not exist.")
+            msg = "Data does not exist."
+        finally:
+            return msg
+
+
 if __name__ == '__main__':
     app.run(debug=True)
