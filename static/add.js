@@ -22,7 +22,11 @@ function add_record() {
         url: '/add/',
         data: {'name': $("#name").val(), 'city': $("#city").val(), 'state': $("#state").val()},
         success: function () {
+            window.location.href = '/';
             console.log("Data added successfully.");
+            $("#name").val("");
+            $("#city").val("");
+            $("#state").val("");
         },
         error: function () {
             console.log("Data could not be added.");

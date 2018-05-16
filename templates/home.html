@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-     <script type = "text/javascript"
-         src = "{{ url_for('static', filename = 'home.js') }}" >
-     </script>
 </head>
 <body>
+    <script type = "text/javascript"
+         src = "{{ url_for('static', filename = 'home.js') }}" >
+     </script>
     <a href="/show_add/">Add</a>
+    <a href="/show_edit/">Edit</a>
     <table>
         <tr>
             <th>ID</th>
@@ -23,9 +24,6 @@
             <td>{{ row.name }}</td>
             <td>{{ row.city }}</td>
             <td>{{ row.name }}</td>
-            <td>
-                <button type="button" onclick="edit({{ row.id }})">Edit</button>
-            </td>
             <td>
                 <button type="button" onclick="del({{ row.id }})">Delete</button>
             </td>

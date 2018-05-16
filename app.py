@@ -1,5 +1,5 @@
 from flaskext.mysql import MySQL
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, session
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -10,6 +10,7 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 con = mysql.connect()
 cur = con.cursor()
+app.secret_key = 'qwertyuiop'
 
 
 @app.route('/')
@@ -39,6 +40,11 @@ def show_add():
     return render_template('add.html')
 
 
+@app.route('/show_edit/')
+def show_edit():
+    return render_template('edit.html')
+
+
 @app.route('/add/', methods=['POST'])
 def add_record():
     if request.method == 'POST':
@@ -60,7 +66,7 @@ def add_record():
             print("Data could not be added.")
             msg = "Data could not be added."
         finally:
-            return redirect('/')
+            return redirect('/', 200)
 
 
 @app.route('/delete/', methods=['GET'])
@@ -87,17 +93,18 @@ def delete_record():
             print(str(e))
             print("Data does not exist.")
         finally:
-            return redirect('/')
+            return redirect('/', 200)
 
 
-@app.route('/modify/', methods=['GET'])
+@app.route('/modify/', methods=['POST'])
 def modify_record():
-    if request.method == 'GET':
-        house_id = request.args.get('id')
+    print('\n\n\n\n\n')
+    if request.method == 'POST':
+        house_id = request.form['id']
         print(house_id)
-        house_name = request.args.get('name')
-        city = request.args.get('city')
-        state = request.args.get('state')
+        house_name = request.form['name']
+        city = request.form['city']
+        state = request.form['state']
         print(house_name)
         print(city)
         print(state)
@@ -105,25 +112,22 @@ def modify_record():
             query = 'SELECT * from data where house_id = %s'
             data = house_id
             cur.execute(query, data)
-            if cur is not None:
-                for row in cur:
-                    print(row[1])
-                    query = 'INSERT INTO changed_data (house_name, city, state) VALUES (%s, %s, %s)'
-                    data = (row[1], row[2], row[3])
-                    print ('\n\n\n')
-                    cur.execute(query, data)
-                query = 'update data set house_name = %s, city = %s, state = %s where house_id = %s'
-                data = (house_name, city, state, house_id)
+            for row in cur:
+                print(row[1])
+                query = 'INSERT INTO changed_data (house_name, city, state) VALUES (%s, %s, %s)'
+                data = (row[1], row[2], row[3])
+                print ('\n\n\n')
                 cur.execute(query, data)
-                con.commit()
-                print "Data modified."
-                msg = "Data modified."
+            query = 'update data set house_name = %s, city = %s, state = %s where house_id = %s'
+            data = (house_name, city, state, house_id)
+            cur.execute(query, data)
+            con.commit()
+            print "Data fetched."
         except Exception as e:
             print(str(e))
             print ("Data not modified.")
-            msg = "Data not modified."
         finally:
-            return msg
+            return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

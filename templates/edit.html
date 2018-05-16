@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Record</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+     <script type = "text/javascript"
+         src = "{{ url_for('static', filename = 'edit.js') }}" >
+     </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>House ID</td>
+            <td> : </td>
+            <td><input type="text" id="id" name="id"></td>
+        </tr>
+        <tr>
+            <td>House Name</td>
+            <td> : </td>
+            <td><input type="text" id="name" name="name"></td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td> : </td>
+            <td><input type="text" id="city" name="city"></td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td> : </td>
+            <td>
+                <input type="text" id="state" name="state">
+            </td>
+        </tr>
+    </table>
+    <button type="button" onclick="edit()">Submit</button>
+</body>
+</html>
