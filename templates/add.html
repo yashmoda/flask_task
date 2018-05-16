@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ADD RECORD</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+     <script type = "text/javascript"
+         src = "{{ url_for('static', filename = 'add.js') }}" >
+     </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>House Name</td>
+            <td> : </td>
+            <td><input type="text" id="name" name="name"></td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td> : </td>
+            <td><input type="text" id="city" name="city"></td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td> : </td>
+            <td>
+                <input type="text" id="state" name="state">
+            </td>
+        </tr>
+    </table>
+    <button type="button" onclick="add()">Submit</button>
+</body>
+</html>
