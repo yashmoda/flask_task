@@ -15,7 +15,7 @@ cur = con.cursor()
 
 @app.route('/')
 def home():
-    response_json = {'data': []}
+    response_json = {'data': [], 'changed_data': []}
     try:
         query = 'select * from data'
         print("Time taken")
@@ -28,6 +28,14 @@ def home():
                          'city': row[2],
                          'state': row[3]}
             response_json['data'].append(temp_json)
+        query = 'select * from changed_data'
+        cur.execute(query)
+        for row in cur:
+            temp_json = {'id': row[0],
+                         'name': row[1],
+                         'city': row[2],
+                         'state': row[3]}
+            response_json['changed_data'].append(temp_json)
         con.commit()
         print(str(response_json))
         print("Data shown.")

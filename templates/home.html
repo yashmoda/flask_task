@@ -12,6 +12,7 @@
     <a href="/show_add/">Add</a>
     <a href="/show_edit/">Edit</a>
     <table>
+        <h3>Data</h3>
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -27,6 +28,23 @@
             <td>
                 <button type="button" onclick="del({{ row.id }})">Delete</button>
             </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <table>
+        <h3>Changed Data</h3>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+        {% for row in response.changed_data %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.city }}</td>
+            <td>{{ row.name }}</td>
         </tr>
         {% endfor %}
     </table>
