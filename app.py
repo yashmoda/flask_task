@@ -1,5 +1,6 @@
 from flaskext.mysql import MySQL
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for
+import time
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -10,7 +11,6 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 con = mysql.connect()
 cur = con.cursor()
-app.secret_key = 'qwertyuiop'
 
 
 @app.route('/')
@@ -18,7 +18,10 @@ def home():
     response_json = {'data': []}
     try:
         query = 'select * from data'
+        print("Time taken")
+        start = time.clock()
         cur.execute(query)
+        print(time.clock() - start)
         for row in cur:
             temp_json = {'id': row[0],
                          'name': row[1],
@@ -57,14 +60,15 @@ def add_record():
         try:
             query = 'INSERT INTO data (house_name, city, state) VALUES (%s, %s, %s)'
             data = (house_name, city, state)
+            print("Time taken")
+            start = time.clock()
             cur.execute(query, data)
+            print(time.clock() - start)
             con.commit()
             print("Data successfully added.")
-            msg = "Data successfully added."
         except Exception as e:
             print(str(e))
             print("Data could not be added.")
-            msg = "Data could not be added."
         finally:
             return redirect('/', 200)
 
@@ -86,7 +90,10 @@ def delete_record():
                 cur.execute(query, data)
             query = 'delete from data where house_id=%s'
             data = house_id
+            print("Time taken")
+            start = time.clock()
             cur.execute(query, data)
+            print(time.clock() - start)
             print (con.commit())
             print("Data deleted successfully.")
         except Exception as e:
@@ -120,7 +127,10 @@ def modify_record():
                 cur.execute(query, data)
             query = 'update data set house_name = %s, city = %s, state = %s where house_id = %s'
             data = (house_name, city, state, house_id)
+            print("Time taken")
+            start = time.clock()
             cur.execute(query, data)
+            print(time.clock()-start)
             con.commit()
             print "Data fetched."
         except Exception as e:

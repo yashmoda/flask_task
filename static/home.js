@@ -5,6 +5,7 @@ function del(id) {
         data: {'id': id},
         success: function () {
             console.log("Data deleted.");
+            window.location.href = '/';
         },
         error: function () {
             console.log("Data could not be deleted.");
