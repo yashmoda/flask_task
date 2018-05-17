@@ -22,7 +22,6 @@ function add_record() {
         url: '/add/',
         data: {'name': $("#name").val(), 'city': $("#city").val(), 'state': $("#state").val()},
         success: function () {
-            window.location.href = '/';
             console.log("Data added successfully.");
             $("#name").val("");
             $("#city").val("");
@@ -32,4 +31,7 @@ function add_record() {
             console.log("Data could not be added.");
         }
     });
+}
+function home() {
+        window.location.href = '/';
 }
