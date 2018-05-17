@@ -11,9 +11,10 @@
      </script>
     <a href="/show_add/">Add</a>
     <a href="/show_edit/">Edit</a>
-    <table>
+    <table border="1">
         <h3>Data</h3>
         <tr>
+            <th>Select</th>
             <th>ID</th>
             <th>Name</th>
             <th>City</th>
@@ -21,17 +22,18 @@
         </tr>
         {% for row in response.data %}
         <tr>
-            <td>{{ row.id }}</td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.city }}</td>
-            <td>{{ row.name }}</td>
-            <td>
-                <button type="button" onclick="del({{ row.id }})">Delete</button>
+            <td align="center">
+                <input class="select_data" type="checkbox" id="{{ row.id }}" value="{{ row.id }}">
             </td>
+            <td align="center" style="width: 20%;">{{ row.id }}</td>
+            <td align="center" style="width: 30%;">{{ row.name }}</td>
+            <td align="center" style="width: 30%;">{{ row.city }}</td>
+            <td align="center" style="width: 20%;">{{ row.state }}</td>
         </tr>
         {% endfor %}
     </table>
-    <table>
+    <button type="button" onclick="del()">Delete</button>
+    <table border="1">
         <h3>Changed Data</h3>
         <tr>
             <th>ID</th>
@@ -41,10 +43,10 @@
         </tr>
         {% for row in response.changed_data %}
         <tr>
-            <td>{{ row.id }}</td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.city }}</td>
-            <td>{{ row.name }}</td>
+            <td align="center" style="width: 20%;">{{ row.id }}</td>
+            <td align="center" style="width: 30%;">{{ row.name }}</td>
+            <td align="center" style="width: 30%;">{{ row.city }}</td>
+            <td align="center" style="width: 20%;">{{ row.name }}</td>
         </tr>
         {% endfor %}
     </table>

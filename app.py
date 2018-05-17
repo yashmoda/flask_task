@@ -1,3 +1,5 @@
+import json
+
 from flaskext.mysql import MySQL
 from flask import Flask, request, render_template, redirect, url_for
 import time
@@ -84,31 +86,35 @@ def add_record():
 @app.route('/delete/', methods=['GET'])
 def delete_record():
     if request.method == 'GET':
-        house_id = request.args.get('id')
-        print(id)
-        try:
-            query = 'SELECT * from data where house_id=%s'
-            data = house_id
-            print ('\n\n\n')
-            cur.execute(query, data)
-            for row in cur:
-                query = 'INSERT INTO changed_data (house_name, city, state) VALUES (%s, %s, %s)'
-                data = (row[1], row[2], row[3])
+        house_id = request.args.getlist('id')
+        print(house_id)
+        print('\n\n\n\n\n')
+        ids = json.loads(house_id[0])
+        print("Time taken")
+        start = time.clock()
+        for i in ids['ids']:
+            print (i)
+            try:
+                query = 'SELECT * from data where house_id=%s'
+                data = i
                 print ('\n\n\n')
                 cur.execute(query, data)
-            query = 'delete from data where house_id=%s'
-            data = house_id
-            print("Time taken")
-            start = time.clock()
-            cur.execute(query, data)
-            print(time.clock() - start)
-            print (con.commit())
-            print("Data deleted successfully.")
-        except Exception as e:
-            print(str(e))
-            print("Data does not exist.")
-        finally:
-            return redirect('/', 200)
+                for row in cur:
+                    query = 'INSERT INTO changed_data (house_name, city, state) VALUES (%s, %s, %s)'
+                    data = (row[1], row[2], row[3])
+                    print ('\n\n\n')
+                    cur.execute(query, data)
+                query = 'delete from data where house_id=%s'
+                data = i
+                cur.execute(query, data)
+                print (con.commit())
+                print("Data deleted successfully.")
+            except Exception as e:
+                print(str(e))
+                print("Data does not exist.")
+            finally:
+                print(time.clock() - start)
+        return redirect('/', 200)
 
 
 @app.route('/modify/', methods=['POST'])
@@ -124,6 +130,8 @@ def modify_record():
         print(city)
         print(state)
         try:
+            print("Time taken")
+            start = time.clock()
             query = 'SELECT * from data where house_id = %s'
             data = house_id
             cur.execute(query, data)
@@ -135,8 +143,6 @@ def modify_record():
                 cur.execute(query, data)
             query = 'update data set house_name = %s, city = %s, state = %s where house_id = %s'
             data = (house_name, city, state, house_id)
-            print("Time taken")
-            start = time.clock()
             cur.execute(query, data)
             print(time.clock()-start)
             con.commit()
